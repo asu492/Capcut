@@ -560,6 +560,9 @@ EMPTY_MATERIAL_CATS = [
 
 def build_draft(name, raw_path, cuts, canvas_w, canvas_h):
     w, h, raw_dur_us, has_audio = probe(raw_path)
+    # Default the canvas to the footage's own size, so vertical (9:16) source
+    # doesn't land pillarboxed on a landscape canvas.
+    canvas_w, canvas_h = canvas_w or w, canvas_h or h
     plat = platform_block()
     materials = {cat: [] for cat in EMPTY_MATERIAL_CATS}
     mid = uid()
@@ -716,7 +719,7 @@ def cmd_replay(job, draft_name=None):
         import shutil
         shutil.copy2(raw, local_raw)
 
-    draft, raw_dur_us, w, h = build_draft(name, local_raw, cuts, 1920, 1080)
+    draft, raw_dur_us, w, h = build_draft(name, local_raw, cuts, None, None)
     now_us = time.time_ns() // 1000
     draft_id = uid()
     (folder / "draft_info.json").write_text(
