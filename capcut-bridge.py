@@ -1053,7 +1053,9 @@ def cmd_graphics(name, job):
     queued = []
     for b in beats:
         mov = b.get("file") or (f"{b['id']}.mov" if b.get("id") else None)
-        at = b.get("start") or b.get("t") or b.get("time")
+        # Not `or`-chained: a beat at 0.0s (e.g. the hook card) is falsy and
+        # would be silently dropped.
+        at = next((b[k] for k in ("start", "t", "time") if b.get(k) is not None), None)
         if not mov or at is None:
             continue
         p = assets / mov

@@ -2,7 +2,9 @@
 
 CapCut has no API. This kit drives it two other ways: editing its draft files
 directly on disk, and clicking its real UI through the macOS accessibility
-tree. macOS only, needs the CapCut desktop app and `uv` (`brew install uv`).
+tree. macOS only, needs the CapCut desktop app, `uv` (`brew install uv`), and
+`ffmpeg`/`ffprobe` on PATH (`brew install ffmpeg` — used to probe media and
+grab draft covers).
 
 Run any command with:
 
